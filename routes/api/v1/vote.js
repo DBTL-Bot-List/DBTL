@@ -24,9 +24,13 @@ client.login(process.env.DISCORD_TOKEN);
 
 router.get('/:botID', async (req, res) => {
     const { botID } = req.params;
-    const { user: userID } = req.query;
+    const { user: userID, token } = req.query;
     const guildID = '1275535499007627436';
     const botRoleID = '1275619408303358083';
+
+    if (token !== process.env.API_TOKEN) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
 
     try {
         const guild = await client.guilds.fetch(guildID);
